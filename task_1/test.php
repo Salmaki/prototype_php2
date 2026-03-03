@@ -1,20 +1,26 @@
 <?php
+$genre = "";
+
 if ($_SERVER['REQUEST_METHOD']==="POST") {
     $name = $_POST["name"] ?? "";
     $color = $_POST["color"] ?? "";
     $lang = $_POST["lang"] ?? "";
+    $genre = $_POST["genre"] ?? "";
     $last_update = date ("Y-m-d H:i:s");
      
     setcookie("name" , $name , time() + 3600 * 24 * 30);
     setcookie("color" , $color , time() + 3600 * 24 * 30);
     setcookie("lang" , $lang , time() + 3600 * 24 * 30);
+    setcookie("genre" , $genre , time() + 3600 * 24 * 30);
     setcookie("last_update" , $last_update , time() + 3600 * 24 * 30);
-    header("Location: test.php");
-    exit();
+   header("Location: test.php");
+   exit();
 } 
+
    $name = $_COOKIE["name"] ?? "Guest";
    $color = $_COOKIE["color"] ?? "#ffff";
    $lang = $_COOKIE["lang"] ?? "en";
+   $genre = $_COOKIE["genre"] ?? "F";
    $last_update = $_COOKIE["last_update"] ?? "never";
 
 if ($lang === "en") {
@@ -36,14 +42,15 @@ if ($lang === "en") {
     $reset = "Réinitialiser"; 
     
 }
-if (isset($GET["action"]) && $GET["action"] == "reset") {
+if (isset($_GET["action"]) && $_GET["action"] == "reset") {
    
     setcookie("name" , "" , time() - 3600 );
     setcookie("color" , "" , time() - 3600 );
     setcookie("lang" , "" , time() - 3600 );
+    setcookie("genre" , "" , time() - 3600 );
     setcookie("last_update" , "" , time() - 3600 );
-    
 }
+
 
 ?>
 <!DOCTYPE html>
@@ -77,11 +84,14 @@ if (isset($GET["action"]) && $GET["action"] == "reset") {
             <option value="fr" <?= $lang === "fr" ? "selected" : "" ?>>Française</option>
         </select>
         <br><br>
+       <label>Genre :</label>
+       <input type="radio" name= "genre" value="F" <?= $genre === "F" ? "checked" : ""?>>F
+       <input type="radio" name = "genre" value="M"<?= $genre === "M" ? "checked" : "" ?>>M
+       <br><br>
          <button type="submit"><?= $btn ?></button>
     </form>
 
     <br>
     <a href="?action=reset"><?= $reset ?></a>
-
 </body>
 </html>
